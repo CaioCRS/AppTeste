@@ -2,17 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { User } from '../../shared/models/user.service'
+import { UserModel } from '../../shared/models/user.service'
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserHttp {
   constructor(private httpClient: HttpClient) { }
 
-  public getUser(): Observable<User> {
+  public getUser(): Observable<UserModel> {
     return this.httpClient.get('https://jsonplaceholder.typicode.com/todos/1').pipe(map(response => {
-      return new User(response);
+      return new UserModel(response);
     }));
   }
 }

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { UserService } from '../../core/http/user.service';
-import { User } from './../../shared/models/user.service';
+import { UserHttp } from '../../core/http/user.service';
+import { UserModel } from './../../shared/models/user.service';
+import { UserService } from './../../shared/services/user.service';
 
 @Component({
   selector: 'app-tab1',
@@ -9,17 +10,39 @@ import { User } from './../../shared/models/user.service';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
-  constructor(public alertCtrl: AlertController, public userService: UserService) {}
+
+  constructor(public alertCtrl: AlertController,
+    public userHttp: UserHttp,
+    private userService: UserService) { }
 
   async RequestApi() {
 
-    this.userService.getUser().subscribe(async (user : User) => {
+    try {
+      this.userHttp.getUser().subscribe(async (user : UserModel) => {
+
+        let insertedUser = await this.userService.insert(user);
+
+        if (insertedUser && insertedUser.insertId > 0){
+          const user = await this.userService.getById(insertedUser.insertId);
+
+          if (user){
+            const alert = await this.alertCtrl.create({
+              message: `${insertedUser.insertId} ${user.title}`,
+              subHeader: 'Hello!',
+              buttons: ['Ok']
+             });
+            await alert.present();
+          } 
+        }
+      });
+    } catch (error) {
       const alert = await this.alertCtrl.create({
-        message: user.title,
+        message: error,
         subHeader: 'Hello!',
         buttons: ['Ok']
-       });
+        });
       await alert.present();
-    });
+    }
   }
 }
+
