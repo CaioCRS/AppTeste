@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>testeTransicao</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-item *ngIf="!profissionalExistente">
+    <ion-label>Cliente</ion-label>
+    <ion-select name="cliente" [(ngModel)]="selectCliente" (ionChange)="ClienteSelecionado()" >
+      <ion-select-option value="1">Homologação</ion-select-option>
+      <ion-select-option value="2">CEJAM</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>Usuário</ion-label>
+    <ion-input [(ngModel)]="inputNome" [disabled]="profissionalExistente"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Senha</ion-label>
+    <ion-input [(ngModel)]="inputSenha"></ion-input>
+  </ion-item> 
+</ion-content>
