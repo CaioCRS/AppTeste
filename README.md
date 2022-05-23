@@ -1,2 +1,2 @@
 # AppTeste
-Teste Ionic
+Teste desenvolvido para estudos de implantação do Ionic
